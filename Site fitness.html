@@ -1,0 +1,1034 @@
+ <!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fit & Chic — Organizador Fitness</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --lavender-100:#F3EAF6;
+      --lavender-200:#E8D9EE;
+      --lavender-300:#C8A2C8; /* lavanda */
+      --gold:#D4AF37;
+      --bg:#FFFFFF;
+      --muted:#6b6b6b;
+      --radius:12px;
+      --shadow:0 8px 28px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:"Montserrat",sans-serif;background:linear-gradient(180deg,#FBF8FD, var(--lavender-100));
+      color:#2a2030;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Login / splash */
+    #splash {
+      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+      background: linear-gradient(180deg,var(--lavender-100), #fff);
+    }
+    .splash-card {
+      width:100%; max-width:980px; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); background:#fff;
+      display:grid; grid-template-columns: 1fr 420px;
+    }
+    .splash-left {
+      padding:28px; display:flex; flex-direction:column; gap:12px; align-items:flex-start;
+      background: linear-gradient(180deg, rgba(200,160,200,0.03), rgba(255,255,255,0.02));
+    }
+    .splash-right {
+      background-size:cover;background-position:center; position:relative; min-height:320px;
+    }
+    .logo-small { width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--lavender-300),#B99AC6); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:"Playfair Display",serif;font-size:22px;}
+    .splash-left h1{margin:0;font-family:"Playfair Display",serif;color:#523858}
+    .splash-left p{margin:0;color:var(--muted)}
+
+    .form {width:100%;}
+    .form input{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid rgba(0,0,0,0.06)}
+    .btn {background:linear-gradient(90deg,var(--lavender-300),#B99AC6);border:none;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+    .btn.ghost {background:transparent;border:1px solid rgba(0,0,0,0.06);color:#412141}
+
+    /* App layout */
+    .app {
+      max-width:1200px;margin:22px auto;padding:18px;display:grid;grid-template-columns:260px 1fr;gap:18px;align-items:start;
+    }
+    .sidebar {background:rgba(255,255,255,0.8);padding:16px;border-radius:14px;box-shadow:var(--shadow);position:sticky; top:20px;height:fit-content}
+    .brand {display:flex;align-items:center;gap:12px}
+    .brand h2{margin:0;font-family:"Playfair Display",serif;color:#513058}
+    .nav {margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .nav button{background:transparent;border:none;padding:10px;border-radius:10px;text-align:left;cursor:pointer;font-weight:600;color:#412141}
+    .nav button.active,.nav button:hover{background:linear-gradient(90deg, rgba(212,175,55,0.08), rgba(200,140,200,0.03));}
+
+    .main {min-height:80vh}
+    .card{background:#fff;border-radius:12px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}
+    .greeting h3{margin:0;font-family:"Playfair Display",serif;color:#4a2953}
+    .small-muted{color:var(--muted);font-size:13px}
+
+    .grid-2 {display:grid;grid-template-columns:1fr 360px;gap:12px}
+    .checklist .item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.04);margin-bottom:8px}
+    .inline {display:flex;gap:8px;align-items:center}
+
+    .progress-bar{height:18px;background:#f3f0f6;border-radius:10px;overflow:hidden}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--lavender-300),#B99AC6);transition:width .3s}
+
+    /* Recipes grid */
+    .recipes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+    .recipe{border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);background:linear-gradient(180deg,#fff,#fbf6fb)}
+    .recipe img{width:100%;height:130px;object-fit:cover}
+    .recipe .body{padding:10px}
+
+    /* modal */
+    .modal {position:fixed;inset:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:60}
+    .modal .panel{width:92%;max-width:760px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.35)}
+    .row {display:flex;gap:8px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* gallery */
+    .gallery {display:flex;flex-direction:column;gap:8px}
+    .gallery-item{display:flex;gap:8px;align-items:center;border-radius:10px;padding:8px;border:1px solid rgba(0,0,0,0.04)}
+    .gallery-item img{max-width:120px;border-radius:8px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .app{grid-template-columns:1fr;padding:12px}
+      .splash-card{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH / LOGIN -->
+  <div id="splash" >
+    <div class="splash-card">
+      <div class="splash-left">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="logo-small" id="splashLogoTxt">FC</div>
+          <div>
+            <h1>Fit & Chic</h1>
+            <p class="muted">Organize. Treine. Brilhe.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <p class="muted">Coloque sua banner (paisagem) e logo no perfil — aparecerá aqui.</p>
+        </div>
+
+        <div class="form">
+          <input id="s_name" placeholder="Seu nome (ex.: Sophia)" />
+          <input id="s_email" placeholder="E-mail" />
+          <input id="s_weight" type="number" placeholder="Peso (kg)" />
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="startBtn">Começar</button>
+            <button class="btn ghost" id="openDemo">Usar demo</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+        </div>
+      </div>
+
+      <div class="splash-right" id="splashBanner" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1400&q=60')">
+  
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="app" style="display:none">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-small" id="brandLogo">FC</div>
+        <div>
+          <h2>Fit & Chic</h2>
+          <div class="small-muted" id="welcomeTxt">Olá, diva ✨</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button class="active" data-tab="dashboard">Dashboard</button>
+        <button data-tab="treinos">Treinos</button>
+        <button data-tab="yoga">Yoga & Massagem</button>
+        <button data-tab="receitas">Receitas</button>
+        <button data-tab="evolucao">Evolução</button>
+        <button data-tab="motivacao">Mensagens Positivas</button>
+        <button data-tab="perfil">Meu Perfil</button>
+        <div style="height:10px"></div>
+        <button id="logoutBtn" style="color:#b33">Sair</button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOP -->
+      <section class="card topbar">
+        <div class="greeting">
+          <h3 id="greetTitle">Olá, diva ✨</h3>
+          <div class="small-muted" id="greetSub">Organize sua rotina com estilo.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn" id="addQuickBtn">+ Adicionar rápido</button>
+        </div>
+      </section>
+
+      <!-- TABS CONTAINER -->
+      <section id="tabs">
+
+        <!-- DASHBOARD -->
+        <div class="card" data-tab-content="dashboard">
+          <div class="grid-2">
+            <div>
+              <h3 style="font-family:'Playfair Display',serif;color:#513058;margin-top:0">Dashboard</h3>
+
+              <div class="card checklist">
+                <h4 style="margin:0 0 8px 0">Checklists do dia</h4>
+                <div id="checklistContainer"></div>
+
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <input id="newChecklistInput" placeholder="Adicionar tarefa (ex.: Aquecimento 5 min)" />
+                  <button class="btn" id="addChecklistBtn">Adicionar</button>
+                </div>
+              </div>
+
+              <div style="margin-top:12px" class="card">
+                <h4 style="margin:0 0 8px 0">Treino rápido sugerido</h4>
+                <div id="todayWorkouts"></div>
+              </div>
+
+            </div>
+
+            <div>
+              <div class="card">
+                <h4 style="margin:0 0 8px 0">Hidratação</h4>
+                <div class="small-muted">Com base no seu peso (ml recomendado = peso × 35)</div>
+                <div style="margin-top:8px" class="progress-bar"><div id="waterFill" class="progress-fill"></div></div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <input id="waterInput" type="number" placeholder="ml bebidos agora" />
+                  <button class="btn" id="addWaterBtn">Registrar</button>
+                </div>
+                <div class="muted" style="margin-top:8px">Você já bebeu <span id="waterCount">0</span> ml / <span id="waterGoal">0</span> ml</div>
+              </div>
+
+              <div class="card" style="margin-top:12px">
+                <h4 style="margin:0 0 8px 0">Atalhos</h4>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn ghost" id="openTreinos">Ir para Treinos</button>
+                  <button class="btn ghost" id="openReceitas">Ir para Receitas</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TREINOS -->
+        <div class="card" style="display:none" data-tab-content="treinos">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Treinos & Evolução</h3>
+
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+            <input id="newWorkoutName" placeholder="Nome do treino (ex: Tonificação pernas)" />
+            <button class="btn" id="addWorkoutBtn">Criar treino</button>
+          </div>
+
+          <div id="workoutsList"></div>
+
+          <!-- Modal: treino detalhe / adicionar exercício -->
+          <div id="workoutModal" class="modal">
+            <div class="panel">
+              <h3 id="workoutModalTitle"></h3>
+              <div id="workoutExercises"></div>
+              <hr/>
+              <h4>Adicionar exercício</h4>
+              <div class="row">
+                <input id="exName" placeholder="Nome ex: Agachamento" />
+                <input id="exReps" placeholder="Reps ou tempo (ex:12)" />
+                <input id="exPause" placeholder="Pausa (s)" />
+                <button class="btn" id="addExBtn">Adicionar</button>
+              </div>
+              <div style="margin-top:10px" class="row">
+                <button class="btn ghost" id="closeWorkoutModal">Fechar</button>
+                <button class="btn" id="startSequenceBtn">Iniciar sequência</button>
+              </div>
+              <div id="exerciseTimer" style="margin-top:12px;display:none">
+                <div class="muted">Exercício atual: <strong id="currentExName"></strong></div>
+                <div style="font-size:32px;font-weight:700" id="timerDisplay">00:00</div>
+                <div class="muted" id="timerState"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- YOGA -->
+        <div class="card" style="display:none" data-tab-content="yoga">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Yoga & Massagem</h3>
+          <div id="yogaChecklist"></div>
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="yogaNew" placeholder="Adicionar atividade de yoga/massagem" />
+            <button class="btn" id="addYogaBtn">Adicionar</button>
+          </div>
+
+          <div style="margin-top:12px" class="card">
+            <h4 style="margin:0 0 8px 0">Playlist YouTube (Yoga & Massagem)</h4>
+            <!-- replace list param with your curated playlist id -->
+            <iframe width="100%" height="260" src="https://www.youtube.com/embed/videoseries?list=PL8Lalics0t" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <!-- RECEITAS -->
+        <div class="card" style="display:none" data-tab-content="receitas">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Receitas</h3>
+
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <input id="recipeTitle" placeholder="Título da receita" />
+            <button class="btn" id="addRecipeBtn">Adicionar receita</button>
+          </div>
+          <textarea id="recipeContent" placeholder="Ingredientes / Modo de preparo (use quebras de linha)..."></textarea>
+
+          <div style="margin-top:12px" id="recipesGrid" class="recipes-grid"></div>
+
+          <!-- Modal recipe detail -->
+          <div id="recipeModal" class="modal">
+            <div class="panel">
+              <h3 id="recipeModalTitle"></h3>
+              <pre id="recipeModalContent" style="white-space:pre-wrap"></pre>
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+                <button class="btn ghost" id="closeRecipeModal">Fechar</button>
+                <button class="btn" id="editRecipeBtn">Editar</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- EVOLUÇÃO -->
+        <div class="card" style="display:none" data-tab-content="evolucao">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Evolução</h3>
+
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <input id="evPeso" type="number" placeholder="Peso (kg)">
+            <input id="evCint" type="number" placeholder="Cintura (cm)">
+            <input id="evQuad" type="number" placeholder="Quadril (cm)">
+            <input id="evGlut" type="number" placeholder="Glúteo (cm)">
+            <input id="evCoxa" type="number" placeholder="Coxa (cm)">
+            <input id="evOmbro" type="number" placeholder="Ombro (cm)">
+            <input id="evBusto" type="number" placeholder="Busto (cm)">
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="saveEvolBtn">Salvar medidas</button>
+            <input type="file" id="photoInput" accept="image/*" />
+            <button class="btn ghost" id="uploadPhotoBtn">Salvar foto</button>
+          </div>
+
+          <div style="margin-top:12px" id="evolList"></div>
+
+          <div style="margin-top:12px" class="card">
+            <h4>Galeria de evolução (mais recente no topo)</h4>
+            <div id="gallery" class="gallery"></div>
+          </div>
+        </div>
+
+        <!-- MOTIVAÇÃO -->
+        <div class="card" style="display:none" data-tab-content="motivacao">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Mensagens Positivas</h3>
+          <div id="msgBox" class="card" style="padding:18px;font-size:18px;font-weight:700"></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="newMsgBtn">Nova mensagem</button>
+            <button class="btn ghost" id="manageMsgsBtn">Gerenciar mensagens</button>
+          </div>
+
+          <div id="manageMsgs" style="margin-top:12px;display:none" class="card">
+            <h4>Editar / Excluir mensagens</h4>
+            <div id="msgsList"></div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <input id="newPosMsg" placeholder="Nova mensagem positiva" />
+              <button class="btn" id="addPosMsgBtn">Adicionar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PERFIL -->
+        <div class="card" style="display:none" data-tab-content="perfil">
+          <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:#513058">Meu Perfil</h3>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <input id="pName" placeholder="Nome" />
+            <input id="pAge" type="number" placeholder="Idade" />
+            <input id="pHeight" type="number" placeholder="Altura (cm)" />
+            <input id="pGoal" placeholder="Meta (ex: Tonificar)" />
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+            <div>
+              <div class="muted">Foto do perfil</div>
+              <input type="file" id="pPhoto" accept="image/*" />
+            </div>
+            <div>
+              <div class="muted">Logo do app (aparece no topo)</div>
+              <input type="file" id="pLogo" accept="image/*" />
+            </div>
+            <div>
+              <div class="muted">Banner (paisagem para splash)</div>
+              <input type="file" id="pBanner" accept="image/*" />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn" id="saveProfileBtn">Salvar perfil</button>
+            <button class="btn ghost" id="resetDataBtn">Resetar demo</button>
+          </div>
+
+          <div style="margin-top:12px" id="profilePreview"></div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODALS GENERAL -->
+  <div id="genericModal" class="modal"><div class="panel"><div id="genericContent"></div><div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn ghost" id="closeGeneric">Fechar</button></div></div></div>
+
+<script>
+/* ===============================
+   Utilitários e inicialização
+   =============================== */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+/* Data keys */
+const KEY_USER = 'fc_user';
+const KEY_CHECKS = 'fc_checks';
+const KEY_WATER = 'fc_water';
+const KEY_WORKOUTS = 'fc_workouts';
+const KEY_POSMSG = 'fc_posmsg';
+const KEY_RECIPES = 'fc_recipes';
+const KEY_EVOL = 'fc_evol';
+const KEY_PHOTOS = 'fc_photos';
+const KEY_YOGA = 'fc_yoga';
+
+/* Demo starter */
+const demoData = () => {
+  if(!localStorage.getItem(KEY_POSMSG)){
+    localStorage.setItem(KEY_POSMSG, JSON.stringify([
+      "Você é mais forte do que imagina ✨",
+      "Cada treino conta — bora brilhar!",
+      "Consistência é seu melhor acessório."
+    ]));
+  }
+  if(!localStorage.getItem(KEY_RECIPES)){
+    localStorage.setItem(KEY_RECIPES, JSON.stringify([
+      {id:1,title:'Bowl Rosa Proteico', content:'Ingredientes:\\n- Iogurte grego\\n- Frutas vermelhas\\nModo:\\nMisture tudo e sirva.'},
+      {id:2,title:'Salada Low Carb Glam', content:'Ingredientes:\\n- Folhas verdes\\n- Frango grelhado\\nModo:\\nMonte a salada e tempere.'}
+    ]));
+  }
+  if(!localStorage.getItem(KEY_WORKOUTS)){
+    localStorage.setItem(KEY_WORKOUTS, JSON.stringify([
+      {id: Date.now()+1, name:'Tonificação Pernas', exercises: [ {name:'Agachamento', reps:'12', pause:30}, {name:'Ponte de Glúteo', reps:'15', pause:20} ]},
+      {id: Date.now()+2, name:'Yoga Flow 15min', exercises: []}
+    ]));
+  }
+}
+
+/* Show/hide tabs */
+function activateNav(btn){
+  $$('.nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const tab = btn.dataset.tab;
+  $$('[data-tab-content]').forEach(el=>el.style.display = el.getAttribute('data-tab-content') === tab ? 'block' : 'none');
+}
+$$('.nav button[data-tab]').forEach(b=>{
+  b.addEventListener('click', ()=> activateNav(b));
+});
+
+/* ===============================
+   Splash / Login
+   =============================== */
+$('#startBtn').addEventListener('click', ()=>{
+  const name = $('#s_name').value.trim();
+  const email = $('#s_email').value.trim();
+  const weight = parseFloat($('#s_weight').value);
+  if(!name || !email || !weight) return alert('Preencha nome, e-mail e peso.');
+  const user = {name, email, weight, waterCount:0, waterGoal: Math.round(weight * 35), profile:{}, logo:null, banner:null};
+  localStorage.setItem(KEY_USER, JSON.stringify(user));
+  openApp();
+});
+$('#openDemo').addEventListener('click', ()=>{
+  demoData();
+  const user = {name:'Sophia', email:'demo@fit.com', weight:49, waterCount:0, waterGoal: Math.round(49*35), profile:{}, logo:null, banner:null};
+  localStorage.setItem(KEY_USER, JSON.stringify(user));
+  openApp();
+});
+
+/* Open main app UI */
+function openApp(){
+  const user = JSON.parse(localStorage.getItem(KEY_USER));
+  if(user && user.banner){
+    $('#splashBanner').style.backgroundImage = `url(${user.banner})`;
+  }
+  $('#splash').style.display = 'none';
+  $('#app').style.display = 'grid';
+  renderAll();
+}
+
+/* Logout */
+$('#logoutBtn').addEventListener('click', ()=>{
+  if(confirm('Sair e voltar para tela inicial?')) {
+    location.reload();
+  }
+});
+
+/* ===============================
+   Render / Checklist
+   =============================== */
+function loadChecks(){ return JSON.parse(localStorage.getItem(KEY_CHECKS) || '[]'); }
+function saveChecks(arr){ localStorage.setItem(KEY_CHECKS, JSON.stringify(arr)); renderChecks(); updateWaterUI(); }
+function renderChecks(){
+  const container = $('#checklistContainer');
+  const arr = loadChecks();
+  container.innerHTML = '';
+  arr.forEach((item, idx)=>{
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div style="display:flex;gap:8px;align-items:center">
+      <input type="checkbox" ${item.done? 'checked':''} data-idx="${idx}" />
+      <div><strong contenteditable="false" data-idx="${idx}" class="editable">${escapeHtml(item.text)}</strong><div class="muted" style="font-size:12px">${item.note || ''}</div></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn ghost editBtn" data-idx="${idx}">Editar</button>
+      <button class="btn ghost" onclick="delCheck(${idx})">Excluir</button>
+    </div>`;
+    container.appendChild(div);
+  });
+  // bind checkboxes
+  container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', e=>{
+      const i = +e.target.dataset.idx;
+      const arr = loadChecks();
+      arr[i].done = e.target.checked;
+      saveChecks(arr);
+    });
+  });
+  // bind edit buttons (toggle contenteditable)
+  container.querySelectorAll('.editBtn').forEach(b=>{
+    b.addEventListener('click', e=>{
+      const i = +b.dataset.idx;
+      const span = container.querySelector(`.editable[data-idx="${i}"]`);
+      if(span.isContentEditable){
+        // save
+        span.contentEditable = "false";
+        const arr = loadChecks();
+        arr[i].text = span.innerText.trim();
+        saveChecks(arr);
+        b.innerText = 'Editar';
+      } else {
+        span.contentEditable = "true"; span.focus();
+        b.innerText = 'Salvar';
+      }
+    });
+  });
+}
+
+$('#addChecklistBtn').addEventListener('click', ()=>{
+  const txt = $('#newChecklistInput').value.trim();
+  if(!txt) return;
+  const arr = loadChecks(); arr.push({text:txt, done:false});
+  saveChecks(arr);
+  $('#newChecklistInput').value='';
+});
+
+/* Delete check */
+function delCheck(i){
+  const arr = loadChecks(); arr.splice(i,1); saveChecks(arr);
+}
+
+/* ===============================
+   WATER (água) calc and UI
+   =============================== */
+function getUser(){ return JSON.parse(localStorage.getItem(KEY_USER)); }
+function saveUser(u){ localStorage.setItem(KEY_USER, JSON.stringify(u)); updateWaterUI(); renderProfilePreview(); renderHeader(); }
+
+function updateWaterUI(){
+  const user = getUser();
+  if(!user) return;
+  const goal = user.waterGoal || Math.round((user.weight||0)*35);
+  const drank = user.waterCount || 0;
+  const pct = Math.min(Math.round((drank/goal)*100),100);
+  $('#waterFill').style.width = pct + '%';
+  $('#waterCount').innerText = drank;
+  $('#waterGoal').innerText = goal;
+}
+$('#addWaterBtn').addEventListener('click', ()=>{
+  const ml = parseInt($('#waterInput').value);
+  if(!ml) return alert('Insira ml bebidos');
+  const user = getUser();
+  user.waterCount = (user.waterCount||0) + ml;
+  saveUser(user);
+  $('#waterInput').value='';
+});
+
+/* ===============================
+   WORKOUTS + exercises + timers
+   =============================== */
+function loadWorkouts(){ return JSON.parse(localStorage.getItem(KEY_WORKOUTS) || '[]'); }
+function saveWorkouts(arr){ localStorage.setItem(KEY_WORKOUTS, JSON.stringify(arr)); renderWorkouts(); }
+
+function renderWorkouts(){
+  const list = loadWorkouts();
+  const container = $('#workoutsList'); container.innerHTML='';
+  list.forEach((w,i)=>{
+    const div = document.createElement('div'); div.className='card'; 
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${escapeHtml(w.name)}</strong><div class="muted">${(w.exercises||[]).length} exercícios</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost" data-id="${w.id}" onclick="openWorkout(${w.id})">Ver mais</button>
+        <button class="btn ghost" onclick="delWorkout(${i})">Excluir</button>
+      </div>
+    </div>`;
+    container.appendChild(div);
+  });
+}
+$('#addWorkoutBtn').addEventListener('click', ()=>{
+  const name = $('#newWorkoutName').value.trim();
+  if(!name) return alert('Nome do treino obrigatório');
+  const arr = loadWorkouts();
+  arr.push({id: Date.now()+Math.floor(Math.random()*999), name, exercises: []});
+  saveWorkouts(arr);
+  $('#newWorkoutName').value='';
+});
+
+/* delete workout */
+function delWorkout(i){
+  const arr = loadWorkouts(); arr.splice(i,1); saveWorkouts(arr);
+}
+
+/* workout modal logic */
+let currentWorkoutId = null;
+function openWorkout(id){
+  const arr = loadWorkouts();
+  const w = arr.find(x=>x.id===id);
+  if(!w) return;
+  currentWorkoutId = id;
+  $('#workoutModalTitle').innerText = w.name;
+  renderWorkoutExercises(w);
+  $('#workoutModal').style.display = 'flex';
+}
+$('#closeWorkoutModal').addEventListener('click', ()=> { $('#workoutModal').style.display='none'; stopExerciseTimer(); });
+
+function renderWorkoutExercises(w){
+  const container = $('#workoutExercises'); container.innerHTML = '';
+  (w.exercises||[]).forEach((ex, idx)=>{
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div><strong>${escapeHtml(ex.name)}</strong><div class="muted">Reps/tempo: ${escapeHtml(ex.reps)} • Pausa ${ex.pause}s</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="startExercise(${idx})">Iniciar</button>
+        <button class="btn ghost" onclick="delExercise(${idx})">Remover</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+/* add exercise */
+$('#addExBtn').addEventListener('click', ()=>{
+  const name = $('#exName').value.trim();
+  const reps = $('#exReps').value.trim();
+  const pause = parseInt($('#exPause').value) || 30;
+  if(!name) return alert('Nome do exercício é obrigatório');
+  const arr = loadWorkouts();
+  const w = arr.find(x=>x.id===currentWorkoutId);
+  w.exercises.push({name,reps,pause});
+  saveWorkouts(arr);
+  renderWorkoutExercises(w);
+  $('#exName').value=''; $('#exReps').value=''; $('#exPause').value='';
+});
+
+/* delete exercise */
+function delExercise(i){
+  const arr = loadWorkouts();
+  const w = arr.find(x=>x.id===currentWorkoutId);
+  w.exercises.splice(i,1);
+  saveWorkouts(arr);
+  renderWorkoutExercises(w);
+}
+
+/* Timer sequence */
+let seqInterval = null;
+let seqIndex = 0;
+let seqPhase = 'exercise'; // exercise / pause
+let seqSeconds = 0;
+function startExercise(idx){
+  // start single exercise from modal
+  seqIndex = idx;
+  seqPhase = 'exercise';
+  const w = loadWorkouts().find(x=>x.id===currentWorkoutId);
+  const ex = w.exercises[idx];
+  seqSeconds = parseInt(ex.reps) || 30; // if reps number used as seconds fallback
+  // show timer UI
+  $('#exerciseTimer').style.display='block';
+  $('#currentExName').innerText = ex.name;
+  updateTimerDisplay();
+  seqInterval = setInterval(()=> {
+    seqSeconds--;
+    updateTimerDisplay();
+    if(seqSeconds<=0){
+      clearInterval(seqInterval);
+      seqInterval = null;
+      if(seqPhase === 'exercise'){
+        // start pause
+        seqPhase = 'pause';
+        seqSeconds = ex.pause || 30;
+        $('#timerState').innerText = 'Pausa';
+        seqInterval = setInterval(()=> {
+          seqSeconds--; updateTimerDisplay();
+          if(seqSeconds<=0){ clearInterval(seqInterval); seqInterval=null; $('#timerState').innerText='Concluído'; }
+        },1000);
+      } else {
+        $('#timerState').innerText = 'Concluído';
+      }
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m = Math.floor(seqSeconds/60); const s = seqSeconds%60;
+  $('#timerDisplay').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function stopExerciseTimer(){
+  if(seqInterval) clearInterval(seqInterval);
+  seqInterval = null; $('#exerciseTimer').style.display='none';
+}
+
+/* start full sequence (iterate exercises) */
+$('#startSequenceBtn').addEventListener('click', ()=>{
+  const w = loadWorkouts().find(x=>x.id===currentWorkoutId);
+  if(!w || !(w.exercises||[]).length) return alert('Nenhum exercício nesse treino');
+  // simple sequential runner
+  seqIndex = 0; runNextExercise();
+});
+function runNextExercise(){
+  const w = loadWorkouts().find(x=>x.id===currentWorkoutId);
+  if(seqIndex >= w.exercises.length){ alert('Sequência finalizada!'); $('#timerState').innerText='Finalizado'; return; }
+  const ex = w.exercises[seqIndex];
+  // run exercise: treat ex.reps as seconds if numeric small, else 30s default
+  seqPhase='exercise'; seqSeconds = parseInt(ex.reps) || 30;
+  $('#exerciseTimer').style.display='block'; $('#currentExName').innerText = ex.name; $('#timerState').innerText='Executando';
+  seqInterval = setInterval(()=>{
+    seqSeconds--; updateTimerDisplay();
+    if(seqSeconds<=0){
+      clearInterval(seqInterval); seqInterval=null;
+      // pause
+      seqPhase='pause'; seqSeconds = ex.pause || 30; $('#timerState').innerText='Pausa';
+      seqInterval = setInterval(()=>{
+        seqSeconds--; updateTimerDisplay();
+        if(seqSeconds<=0){
+          clearInterval(seqInterval); seqInterval=null;
+          seqIndex++; runNextExercise();
+        }
+      },1000);
+    }
+  },1000);
+}
+
+/* ===============================
+   YOGA
+   =============================== */
+function loadYoga(){ return JSON.parse(localStorage.getItem(KEY_YOGA)||'[]'); }
+function saveYoga(arr){ localStorage.setItem(KEY_YOGA, JSON.stringify(arr)); renderYoga(); }
+
+function renderYoga(){
+  const list = loadYoga();
+  const container = $('#yogaChecklist'); container.innerHTML='';
+  list.forEach((y,i)=>{
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><input type="checkbox" ${y.done?'checked':''} data-i="${i}" /> <div><strong contenteditable="false" data-i="${i}" class="yEditable">${escapeHtml(y.text)}</strong></div></div>
+      <div style="display:flex;gap:8px"><button class="btn ghost yEdit" data-i="${i}">Editar</button><button class="btn ghost" onclick="delYoga(${i})">Excluir</button></div>`;
+    container.appendChild(div);
+  });
+  container.querySelectorAll('input[type=checkbox]').forEach(cb=> cb.addEventListener('change', e=>{
+    const idx = +e.target.dataset.i; const arr = loadYoga(); arr[idx].done = e.target.checked; saveYoga(arr);
+  }));
+  container.querySelectorAll('.yEdit').forEach(b=> b.addEventListener('click', e=>{
+    const idx = +b.dataset.i; const span = container.querySelector(`.yEditable[data-i="${idx}"]`);
+    if(span.isContentEditable){ span.contentEditable='false'; b.innerText='Editar'; const arr=loadYoga(); arr[idx].text = span.innerText; saveYoga(arr); }
+    else { span.contentEditable='true'; span.focus(); b.innerText='Salvar'; }
+  }));
+}
+$('#addYogaBtn').addEventListener('click', ()=> {
+  const txt = $('#yogaNew').value.trim(); if(!txt) return;
+  const arr = loadYoga(); arr.push({text:txt, done:false}); saveYoga(arr); $('#yogaNew').value='';
+});
+function delYoga(i){ const arr=loadYoga(); arr.splice(i,1); saveYoga(arr); }
+
+/* ===============================
+   RECIPES (ver mais, editar, excluir)
+   =============================== */
+function loadRecipes(){ return JSON.parse(localStorage.getItem(KEY_RECIPES)||'[]'); }
+function saveRecipes(arr){ localStorage.setItem(KEY_RECIPES, JSON.stringify(arr)); renderRecipes(); }
+
+function renderRecipes(){
+  const grid = $('#recipesGrid'); grid.innerHTML='';
+  const arr = loadRecipes();
+  arr.forEach(r=>{
+    const card = document.createElement('div'); card.className='recipe';
+    card.innerHTML = `<img src="${r.img||'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=60'}" alt="">
+      <div class="body">
+        <strong>${escapeHtml(r.title)}</strong>
+        <div class="muted" style="margin-top:6px">${(r.tags||[]).join(', ')}</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn" onclick="openRecipe(${r.id})">Ver mais</button>
+          <button class="btn ghost" onclick="editRecipe(${r.id})">Editar</button>
+          <button class="btn ghost" onclick="deleteRecipe(${r.id})">Excluir</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+$('#addRecipeBtn').addEventListener('click', ()=>{
+  const title = $('#recipeTitle').value.trim(); const content = $('#recipeContent').value.trim();
+  if(!title || !content) return alert('Preencha título e modo de preparo');
+  const arr = loadRecipes(); const id = Date.now()+Math.floor(Math.random()*999);
+  arr.push({id,title,content, tags:[], img:null});
+  saveRecipes(arr);
+  $('#recipeTitle').value=''; $('#recipeContent').value='';
+});
+function openRecipe(id){
+  const r = loadRecipes().find(x=>x.id===id);
+  $('#recipeModalTitle').innerText = r.title;
+  $('#recipeModalContent').innerText = r.content;
+  $('#recipeModal').style.display='flex';
+}
+$('#closeRecipeModal').addEventListener('click', ()=> $('#recipeModal').style.display='none');
+
+function editRecipe(id){
+  const r = loadRecipes().find(x=>x.id===id);
+  const newTitle = prompt('Editar título', r.title);
+  if(newTitle===null) return;
+  const newContent = prompt('Editar ingredientes / modo', r.content);
+  if(newContent===null) return;
+  r.title = newTitle; r.content = newContent;
+  const arr = loadRecipes(); const idx = arr.findIndex(x=>x.id===id); arr[idx]=r; saveRecipes(arr);
+}
+function deleteRecipe(id){
+  if(!confirm('Excluir essa receita?')) return;
+  const arr = loadRecipes().filter(x=>x.id!==id); saveRecipes(arr);
+}
+
+/* ===============================
+   EVOLUÇÃO (salvar, excluir, fotos)
+   =============================== */
+function loadEvol(){ return JSON.parse(localStorage.getItem(KEY_EVOL)||'[]'); }
+function saveEvol(arr){ localStorage.setItem(KEY_EVOL, JSON.stringify(arr)); renderEvol(); }
+
+$('#saveEvolBtn').addEventListener('click', ()=>{
+  const peso = $('#evPeso').value; const cint = $('#evCint').value; const quad = $('#evQuad').value;
+  const glut = $('#evGlut').value; const coxa = $('#evCoxa').value; const ombro = $('#evOmbro').value; const busto = $('#evBusto').value;
+  const rec = {peso,cintura:cint,quadril:quad,gluteo:glut,coxa,ombro,busto, date: new Date().toISOString()};
+  const arr = loadEvol(); arr.push(rec); saveEvol(arr);
+  alert('Medidas salvas');
+  $('#evPeso').value=''; $('#evCint').value=''; $('#evQuad').value='';
+  $('#evGlut').value=''; $('#evCoxa').value=''; $('#evOmbro').value=''; $('#evBusto').value='';
+});
+function renderEvol(){
+  const arr = loadEvol().slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
+  const container = $('#evolList'); container.innerHTML='';
+  arr.forEach((e, idx)=>{
+    const d = new Date(e.date).toLocaleString();
+    const div = document.createElement('div'); div.className='card';
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${d}</strong><div class="muted">Peso:${e.peso}kg • Cintura:${e.cintura}cm • Quadril:${e.quadril}cm • Glúteo:${e.gluteo}cm • Coxa:${e.coxa}cm • Ombro:${e.ombro}cm • Busto:${e.busto||'-'}</div></div>
+      <div><button class="btn ghost" onclick="delEvol(${idx})">Excluir</button></div>
+    </div>`;
+    container.appendChild(div);
+  });
+}
+function delEvol(index){
+  const arr = loadEvol();
+  // arr is sorted view; to delete correct item map to original sorted indices:
+  const sorted = arr.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const itemToRemove = sorted[index];
+  const newArr = arr.filter(x=> x.date !== itemToRemove.date || x.peso !== itemToRemove.peso);
+  saveEvol(newArr);
+}
+
+/* Photos */
+function loadPhotos(){ return JSON.parse(localStorage.getItem(KEY_PHOTOS)||'[]'); }
+function savePhotos(arr){ localStorage.setItem(KEY_PHOTOS, JSON.stringify(arr)); renderGallery(); }
+
+$('#uploadPhotoBtn').addEventListener('click', ()=>{
+  const file = $('#photoInput').files[0];
+  if(!file) return alert('Selecione uma foto');
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const arr = loadPhotos();
+    arr.push({img:e.target.result, date: new Date().toISOString()});
+    savePhotos(arr);
+    alert('Foto salva');
+    $('#photoInput').value='';
+  }
+  reader.readAsDataURL(file);
+});
+
+function renderGallery(){
+  const arr = loadPhotos().slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
+  const container = $('#gallery'); container.innerHTML='';
+  arr.forEach((p, idx)=>{
+    const div = document.createElement('div'); div.className='gallery-item';
+    const d = new Date(p.date).toLocaleString();
+    div.innerHTML = `<div style="flex:1"><div class="muted">${d}</div><img src="${p.img}" alt="foto"/></div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost" onclick="deletePhoto(${idx})">Excluir</button></div>`;
+    container.appendChild(div);
+  });
+}
+function deletePhoto(index){
+  const arr = loadPhotos();
+  // arr sorted desc, so map accordingly
+  const sorted = arr.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const target = sorted[index];
+  const newArr = arr.filter(x=> x.date !== target.date || x.img !== target.img);
+  savePhotos(newArr);
+}
+
+/* ===============================
+   MESSAGES POSITIVAS
+   =============================== */
+function loadPosMsg(){ return JSON.parse(localStorage.getItem(KEY_POSMSG)||'[]'); }
+function savePosMsg(arr){ localStorage.setItem(KEY_POSMSG, JSON.stringify(arr)); renderPosMsg(); }
+
+function renderPosMsg(){
+  const arr = loadPosMsg();
+  $('#msgBox').innerText = arr[Math.floor(Math.random()*arr.length)] || 'Você é incrível!';
+  // manage list
+  $('#msgsList').innerHTML = '';
+  arr.forEach((m,i)=> {
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div>${escapeHtml(m)}</div><div><button class="btn ghost" onclick="delPosMsg(${i})">Excluir</button></div></div>`;
+    $('#msgsList').appendChild(div);
+  });
+}
+$('#newMsgBtn').addEventListener('click', ()=> renderPosMsg());
+$('#manageMsgsBtn').addEventListener('click', ()=> { $('#manageMsgs').style.display = $('#manageMsgs').style.display === 'none' ? 'block' : 'none'; });
+$('#addPosMsgBtn').addEventListener('click', ()=>{
+  const txt = $('#newPosMsg').value.trim(); if(!txt) return;
+  const arr = loadPosMsg(); arr.push(txt); savePosMsg(arr); $('#newPosMsg').value='';
+});
+function delPosMsg(i){ const arr = loadPosMsg(); arr.splice(i,1); savePosMsg(arr); }
+
+/* ===============================
+   PROFILE: upload logo, banner, profile photo
+   =============================== */
+$('#saveProfileBtn').addEventListener('click', ()=>{
+  const name = $('#pName').value.trim();
+  const age = $('#pAge').value.trim();
+  const height = $('#pHeight').value.trim();
+  const goal = $('#pGoal').value.trim();
+  const user = getUser() || {};
+  user.profile = {name, age, height, goal};
+  // profile photo
+  const file = $('#pPhoto').files[0];
+  const logoFile = $('#pLogo').files[0];
+  const bannerFile = $('#pBanner').files[0];
+
+  // helper to read files sequentially
+  const readThenSave = (file, key, cb) => {
+    if(!file){ cb(); return; }
+    const reader = new FileReader();
+    reader.onload = function(e){ user[key] = e.target.result; cb(); }
+    reader.readAsDataURL(file);
+  };
+
+  readThenSave(file, 'photo', ()=>{
+    readThenSave(logoFile, 'logo', ()=>{
+      readThenSave(bannerFile, 'banner', ()=>{
+        saveUser(user);
+        alert('Perfil salvo!');
+      });
+    });
+  });
+});
+
+function renderProfilePreview(){
+  const user = getUser();
+  if(!user) return;
+  let html = `<div class="muted">Nome: ${user.profile?.name || user.name || ''}</div>
+    <div class="muted">Meta: ${user.profile?.goal || '-'}</div>`;
+  if(user.photo) html += `<div style="margin-top:8px"><img src="${user.photo}" style="max-width:140px;border-radius:8px"/></div>`;
+  if(user.logo) { $('#brandLogo').style.backgroundImage = `url(${user.logo})`; $('#brandLogo').innerText = ''; $('#splashLogoTxt').innerText = ''; }
+  if(user.banner) { $('#splashBanner').style.backgroundImage = `url(${user.banner})`; }
+  $('#profilePreview').innerHTML = html;
+}
+function renderHeader(){
+  const user = getUser();
+  $('#welcomeTxt').innerText = `Olá, ${user?.profile?.name || user?.name || 'diva'} ✨`;
+  $('#greetTitle').innerText = `Olá, ${user?.profile?.name || user?.name || 'diva'} ✨`;
+}
+
+/* ===============================
+   Quick actions + shortcuts
+   =============================== */
+$('#addQuickBtn').addEventListener('click', ()=>{
+  const what = prompt('Adicionar: check / receita / treino / mensagem / yoga / agua (ex: check)')?.toLowerCase();
+  if(!what) return;
+  if(what==='check'){ const t=prompt('Tarefa'); if(t){ const arr=loadChecks(); arr.push({text:t,done:false}); saveChecks(arr);} }
+  else if(what==='receita'){ const title=prompt('Título'); const content=prompt('Ingredientes e modo'); if(title && content){ const arr=loadRecipes(); arr.push({id:Date.now(),title,content}); saveRecipes(arr);} }
+  else if(what==='treino'){ const n=prompt('Nome do treino'); if(n){ const arr=loadWorkouts(); arr.push({id:Date.now(),name:n,exercises:[]}); saveWorkouts(arr);} }
+  else if(what==='mensagem'){ const m=prompt('Mensagem positiva'); if(m){ const arr=loadPosMsg(); arr.push(m); savePosMsg(arr);} }
+  else if(what==='yoga'){ const y=prompt('Yoga atividade'); if(y){ const arr=loadYoga(); arr.push({text:y,done:false}); saveYoga(arr);} }
+  else if(what==='agua'){ const ml = parseInt(prompt('Quantos ml?')||'0'); if(ml){ const user=getUser(); user.waterCount=(user.waterCount||0)+ml; saveUser(user);} }
+});
+
+/* navigation shortcuts */
+$('#openTreinos').addEventListener('click', ()=> {
+  $$('[data-tab-content]').forEach(el=>el.style.display='none');
+  $$('[data-tab-content="treinos"]')[0].style.display='block';
+});
+$('#openReceitas').addEventListener('click', ()=> {
+  $$('[data-tab-content]').forEach(el=>el.style.display='none');
+  $$('[data-tab-content="receitas"]')[0].style.display='block';
+});
+
+/* reset demo */
+$('#resetDataBtn').addEventListener('click', ()=>{
+  if(!confirm('Resetar todos os dados locais (demo)?')) return;
+  localStorage.clear();
+  location.reload();
+});
+
+/* generic modal */
+$('#closeGeneric').addEventListener('click', ()=> $('#genericModal').style.display='none');
+
+/* ===============================
+   Render everything initial
+   =============================== */
+function renderAll(){
+  demoData();
+  renderChecks();
+  renderWorkouts();
+  renderYoga();
+  renderRecipes();
+  renderEvol();
+  renderGallery();
+  renderPosMsg();
+  renderProfilePreview();
+  renderHeader();
+  updateWaterUI();
+  // default tab
+  $$('[data-tab-content]').forEach(el=> el.style.display = el.getAttribute('data-tab-content') === 'dashboard' ? 'block' : 'none');
+}
+
+/* ===============================
+   Helpers
+   =============================== */
+function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"'`=\/]/g, function(s){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#47;','`':'&#96;','=':'&#61;'})[s]; });}
+
+/* auto open if user exists */
+window.addEventListener('load', ()=>{
+  if(localStorage.getItem(KEY_USER)){
+    $('#splash').style.display='none'; $('#app').style.display='grid'; renderAll();
+  }
+});
+</script>
+</body>
+</html>
